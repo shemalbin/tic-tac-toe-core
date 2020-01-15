@@ -11,6 +11,8 @@ import domain.TicTacToe;
  */
 public interface ITicTaeToeService {
 	
+	String NAME = "TicTaeToeService";
+	
 	public TicTacToe initializeTheBoard(TicTacToe ticTacToe);
 	public EBoardMark [][] getPlayerMove(int row, int col, EBoardMark [][] board);
 }
