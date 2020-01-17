@@ -15,4 +15,5 @@ public interface ITicTaeToeService {
 	
 	public TicTacToe initializeTheBoard(TicTacToe ticTacToe);
 	public EBoardMark [][] getPlayerMove(int row, int col, EBoardMark [][] board);
+	public int checkWinner(EBoardMark [][] board);
 }

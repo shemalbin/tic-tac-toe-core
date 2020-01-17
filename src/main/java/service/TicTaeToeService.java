@@ -25,7 +25,7 @@ public class TicTaeToeService implements ITicTaeToeService {
 			 * Initializing the board with the empty spaces 
 			 * Starting by looping through the rows and then the columns */
 			for(int i=0; i<TicTacToe.getRows(); i++) {
-				for(int j=0; i<TicTacToe.getColumns(); i++) {
+				for(int j=0; j<TicTacToe.getColumns(); j++) {
 					board[i][j] = EBoardMark.EMPTY;
 				}
 			}
@@ -56,6 +56,48 @@ public class TicTaeToeService implements ITicTaeToeService {
 			e.printStackTrace();
 		}
 		return boardMark;
+	}
+	
+	/* This method will check if there is a winner
+	 * It will return 1 if the computer won
+	 * and -1 if the user won and 0 if none of them won*/
+	public int checkWinner(EBoardMark[][] board) {
+		// Check if the we have a winner on the rows
+		for(int row=0; row<TicTacToe.getRows(); row++) {
+			if(board[row][0] == board[row][1] && board[row][0] == board[row][2]) {
+				if(board[row][0].equals(EBoardMark.CROSS)) {
+					return -1;
+				} else if(board[row][0].equals(EBoardMark.CIRCLE)) {
+					return 1;
+				}
+			}
+		}
+		// Check if the we have a winner on the columns
+		for(int col=0; col<TicTacToe.getColumns(); col++) {
+			if(board[0][col] == board[1][col] && board[0][col] == board[2][col]) {
+				if(board[0][col].equals(EBoardMark.CROSS)) {
+					return -1;
+				} else if(board[0][col].equals(EBoardMark.CIRCLE)) {
+					return 1;
+				}
+			}
+		}
+		// Check if the we have a winner on the diagonals
+		if(board[0][0] == board[1][1] && board[0][0] == board[2][2]) {
+			if(board[0][0].equals(EBoardMark.CROSS)) {
+				return -1;
+			} else if(board[0][0].equals(EBoardMark.CIRCLE)) {
+				return 1;
+			}
+		}
+		if(board[0][2] == board[1][1] && board[0][2] == board[2][0]) {
+			if(board[0][2].equals(EBoardMark.CROSS)) {
+				return -1;
+			} else if(board[0][2].equals(EBoardMark.CIRCLE)) {
+				return 1;
+			}
+		}
+		return 0;
 	}
 	
 	private boolean validatePlayerMove(int row, int col, EBoardMark [][] boardMark) {
