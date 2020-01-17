@@ -25,7 +25,7 @@ public class TicTaeToeService implements ITicTaeToeService {
 			 * Initializing the board with the empty spaces 
 			 * Starting by looping through the rows and then the columns */
 			for(int i=0; i<TicTacToe.getRows(); i++) {
-				for(int j=0; i<TicTacToe.getColumns(); i++) {
+				for(int j=0; j<TicTacToe.getColumns(); j++) {
 					board[i][j] = EBoardMark.EMPTY;
 				}
 			}
