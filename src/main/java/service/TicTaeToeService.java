@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class TicTaeToeService implements ITicTaeToeService {
 	
 	private EBoardMark [][] board;
+	
 
 	// The method which will initialize the board and start over
 	public TicTacToe initializeTheBoard(TicTacToe ticTacToe) {
@@ -58,7 +59,7 @@ public class TicTaeToeService implements ITicTaeToeService {
 		return boardMark;
 	}
 	
-	private boolean validatePlayerMove(int row, int col, EBoardMark [][] boardMark) {
+	public boolean validatePlayerMove(int row, int col, EBoardMark [][] boardMark) {
 		boolean valid = true;
 		// First we will validate if the row and the col is not out of the board
 		if(row<0 || row>2 || col<0 || col>2 )
@@ -67,5 +68,11 @@ public class TicTaeToeService implements ITicTaeToeService {
 		if(!boardMark[row][col].equals(EBoardMark.EMPTY))
 			valid = false;
 		return valid;
+	}
+
+	public int[] getBestMove(EBoardMark[][] board) {
+		AITicTacToe ai = new AITicTacToe();
+		int [] result =  ai.bestMove(board);
+		return result;
 	}
 }

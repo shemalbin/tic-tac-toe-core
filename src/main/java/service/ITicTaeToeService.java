@@ -15,4 +15,6 @@ public interface ITicTaeToeService {
 	
 	public TicTacToe initializeTheBoard(TicTacToe ticTacToe);
 	public EBoardMark [][] getPlayerMove(int row, int col, EBoardMark [][] board);
+	public boolean validatePlayerMove(int row, int col, EBoardMark [][] boardMark);
+	public int[] getBestMove(EBoardMark[][] board);
 }

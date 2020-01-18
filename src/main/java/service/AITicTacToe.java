@@ -1,7 +1,5 @@
 package service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import domain.EBoardMark;
 import domain.TicTacToe;
 
@@ -30,7 +28,7 @@ public class AITicTacToe {
 			return result;
 		}
 		
-		if(availableSpaceOnTheBoard(board)) {
+		if(!availableSpaceOnTheBoard(board)) {
 			return 0;
 		}
 		
@@ -41,7 +39,7 @@ public class AITicTacToe {
 				for(int j=0; j<TicTacToe.getColumns(); j++) {
 					if(board[i][j] == EBoardMark.EMPTY) {
 						// Place the point on the board
-						board[i][j] = EBoardMark.CIRCLE;
+						board[i][j] = EBoardMark.CROSS;
 						
 						bestScore = Math.max(bestScore, minimax(board, depth+1, !isMaximizing));
 						
@@ -59,7 +57,7 @@ public class AITicTacToe {
 				for(int j=0; j<TicTacToe.getColumns(); j++) {
 					if(board[i][j] == EBoardMark.EMPTY) {
 						// Place the point on the board
-						board[i][j] = EBoardMark.CROSS;
+						board[i][j] = EBoardMark.CIRCLE;
 						
 						bestScore = Math.min(bestScore, minimax(board, depth+1, !isMaximizing));
 						
@@ -81,7 +79,7 @@ public class AITicTacToe {
 		for(int i=0; i<TicTacToe.getRows(); i++) {
 			for(int j=0; j<TicTacToe.getColumns(); j++) {
 				if(board[i][j] == EBoardMark.EMPTY) {
-					board[i][j] = EBoardMark.CIRCLE;
+					board[i][j] = EBoardMark.CROSS;
 					int score = minimax(board, 0, false);
 					board[i][j] = EBoardMark.EMPTY;
 					
@@ -115,9 +113,9 @@ public class AITicTacToe {
 		for(int row=0; row<TicTacToe.getRows(); row++) {
 			if(board[row][0] == board[row][1] && board[row][0] == board[row][2]) {
 				if(board[row][0].equals(EBoardMark.CROSS)) {
-					return -1;
-				} else if(board[row][0].equals(EBoardMark.CIRCLE)) {
 					return 1;
+				} else if(board[row][0].equals(EBoardMark.CIRCLE)) {
+					return -1;
 				}
 			}
 		}
@@ -125,25 +123,25 @@ public class AITicTacToe {
 		for(int col=0; col<TicTacToe.getColumns(); col++) {
 			if(board[0][col] == board[1][col] && board[0][col] == board[2][col]) {
 				if(board[0][col].equals(EBoardMark.CROSS)) {
-					return -1;
-				} else if(board[0][col].equals(EBoardMark.CIRCLE)) {
 					return 1;
+				} else if(board[0][col].equals(EBoardMark.CIRCLE)) {
+					return -1;
 				}
 			}
 		}
 		// Check if the we have a winner on the diagonals
 		if(board[0][0] == board[1][1] && board[0][0] == board[2][2]) {
 			if(board[0][0].equals(EBoardMark.CROSS)) {
-				return -1;
-			} else if(board[0][0].equals(EBoardMark.CIRCLE)) {
 				return 1;
+			} else if(board[0][0].equals(EBoardMark.CIRCLE)) {
+				return -1;
 			}
 		}
 		if(board[0][2] == board[1][1] && board[0][2] == board[2][0]) {
 			if(board[0][2].equals(EBoardMark.CROSS)) {
-				return -1;
-			} else if(board[0][2].equals(EBoardMark.CIRCLE)) {
 				return 1;
+			} else if(board[0][2].equals(EBoardMark.CIRCLE)) {
+				return -1;
 			}
 		}
 		return 0;
