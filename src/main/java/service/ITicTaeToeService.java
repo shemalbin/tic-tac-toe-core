@@ -17,4 +17,5 @@ public interface ITicTaeToeService {
 	public EBoardMark [][] getPlayerMove(int row, int col, EBoardMark [][] board);
 	public boolean validatePlayerMove(int row, int col, EBoardMark [][] boardMark);
 	public int[] getBestMove(EBoardMark[][] board);
+	public EBoardMark checkTheWinner(EBoardMark[][] board);
 }
