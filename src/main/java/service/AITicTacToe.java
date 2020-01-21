@@ -94,7 +94,7 @@ public class AITicTacToe {
 		return new int[]{row,col};
 	}
 	
-	private boolean availableSpaceOnTheBoard(EBoardMark [][] boardMark) {
+	public boolean availableSpaceOnTheBoard(EBoardMark [][] boardMark) {
 		for(int i=0; i<TicTacToe.getRows(); i++) {
 			for(int j=0; j<TicTacToe.getColumns(); j++) {
 				if(boardMark[i][j] == EBoardMark.EMPTY) {

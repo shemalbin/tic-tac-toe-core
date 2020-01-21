@@ -1,6 +1,8 @@
 package test;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,8 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import domain.EBoardMark;
-import domain.EState;
-import domain.TicTacToe;
+import service.AITicTacToe;
 import service.ITicTaeToeService;
 
 /**
@@ -26,45 +27,80 @@ public class TestTicTacToe {
 	@Autowired
 	private ITicTaeToeService ticTacToeService;
 	
+	AITicTacToe ai = new AITicTacToe();	
+	
 	@Test
-	public void testInitializeBoard() {
-		// Check if the result board is in playing state and if it is the turn for the user(cross) to play
-		TicTacToe ticTacToe = new TicTacToe();
-		TicTacToe ticTacToeResult = ticTacToeService.initializeTheBoard(ticTacToe);
-		assertEquals(EState.PLAYING, ticTacToeResult.getGameStatus());
-		assertEquals(EBoardMark.CROSS, ticTacToeResult.getBoardMark());
+	public void testAvailableSpace() {
+		// Test to check if it there is an available space
+		EBoardMark [][] board = this.testBoardMarkSet();
+		boolean result = ai.availableSpaceOnTheBoard(board);
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testNoAvailableSpace() {
+		// Test to check if it there is an available space
+		EBoardMark [][] board = this.testBoardMarkSet();
+		board[0][0] = EBoardMark.CROSS;
+		board[0][2] = EBoardMark.CIRCLE;
+		board[1][2] = EBoardMark.CROSS;
+		board[2][0] = EBoardMark.CIRCLE;
+		board[2][2] = EBoardMark.CROSS;
+		boolean result = ai.availableSpaceOnTheBoard(board);
+		assertFalse(result);
+	}
+	
+	@Test
+	public void testCheckWinner() {
+		// Test to check if there is a winner
+		EBoardMark [][] board = this.testBoardMarkSet();
+		board[0][0] = EBoardMark.CIRCLE;
+		board[2][2] = EBoardMark.CIRCLE;
+		int winner = ai.checkWinner(board);
+		assertEquals(-1, winner);
+	}
+	
+	@Test
+	public void testGetBestMove() {
+		// Test to get the best move
+		EBoardMark [][] board = this.testBoardMarkSet();
+		int[] result = ticTacToeService.getBestMove(board);
+		assertNotNull(result);
 	}
 	
 	@Test(expected = NullPointerException.class)
-	public void testInitializeBoardNegative() {
-		// Test to check if it will throw the null pointer exception
-		TicTacToe ticTacToe = null;
-		TicTacToe ticTacToeResult = ticTacToeService.initializeTheBoard(ticTacToe);
-		assertEquals(EState.PLAYING, ticTacToeResult.getGameStatus());
+	public void testGetBestMoveNegative() {
+		// Test to check if the get best move will throw the null pointer exception
+		EBoardMark [][] board = null;
+		ticTacToeService.getBestMove(board);
 	}
 	
 	@Test
-	public void testGetPlayerMove() {
-		// Test to check if the user move will be displayed on the board
+	public void testCheckPlayerWin() {
+		// Test to check if the circle mark won the game
 		EBoardMark [][] board = this.testBoardMarkSet();
-		EBoardMark [][] newBoard = ticTacToeService.getPlayerMove(0, 2, board);
-		assertEquals(EBoardMark.CROSS, newBoard[0][2]);
+		board[0][0] = EBoardMark.CIRCLE;
+		board[2][2] = EBoardMark.CIRCLE;
+		EBoardMark winner = ticTacToeService.checkTheWinner(board);
+		assertEquals(EBoardMark.CIRCLE, winner);
 	}
 	
 	@Test
-	public void testGetPlayerMoveInvalid() {
-		// Test to check if the user played an invalid move if the board will not change
+	public void testCheckDraw() {
+		// Test to check if there is a draw
 		EBoardMark [][] board = this.testBoardMarkSet();
-		EBoardMark [][] newBoard = ticTacToeService.getPlayerMove(3, 3, board);
-		assertArrayEquals(newBoard, board);
+		EBoardMark winner = ticTacToeService.checkTheWinner(board);
+		assertEquals(EBoardMark.EMPTY, winner);
 	}
 	
 	@Test
-	public void testGetPlayerMoveNotEmptySpace() {
-		// Test to check if the user played in an occupied space if the space will not change
+	public void testCheckComputerWin() {
+		// Test to check if the cross mark won the game
 		EBoardMark [][] board = this.testBoardMarkSet();
-		EBoardMark [][] newBoard = ticTacToeService.getPlayerMove(1, 1, board);
-		assertEquals(EBoardMark.CIRCLE, newBoard[1][1]);
+		board[0][0] = EBoardMark.CROSS;
+		board[0][2] = EBoardMark.CROSS;
+		EBoardMark winner = ticTacToeService.checkTheWinner(board);
+		assertEquals(EBoardMark.CROSS, winner);
 	}
 	
 	private EBoardMark [][] testBoardMarkSet(){
