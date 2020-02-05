@@ -66,11 +66,11 @@ public class TicTaeToeService implements ITicTaeToeService {
 	}
 	
 	/*This method will return the best move from the AI*/
-	public int[] getBestMove(EBoardMark[][] board) {
+	public int[] getBestMove(EBoardMark[][] board, EBoardMark playerMark) {
 		int [] result = null;
 		try {
 			AITicTacToe ai = new AITicTacToe();
-			result =  ai.bestMove(board);
+			result =  ai.bestMove(board, playerMark);
 		}
 		catch (Exception ex) {
 			LOGGER.error(ex.getMessage());

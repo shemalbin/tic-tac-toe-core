@@ -1,8 +1,9 @@
 package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import domain.EBoardMark;
+import domain.EState;
 import service.AITicTacToe;
 import service.ITicTaeToeService;
 
@@ -45,6 +47,7 @@ public class TestTicTacToe {
 		board[0][2] = EBoardMark.CIRCLE;
 		board[1][2] = EBoardMark.CROSS;
 		board[2][0] = EBoardMark.CIRCLE;
+		board[2][1] = EBoardMark.CROSS;
 		board[2][2] = EBoardMark.CROSS;
 		boolean result = ai.availableSpaceOnTheBoard(board);
 		assertFalse(result);
@@ -56,23 +59,49 @@ public class TestTicTacToe {
 		EBoardMark [][] board = this.testBoardMarkSet();
 		board[0][0] = EBoardMark.CIRCLE;
 		board[2][2] = EBoardMark.CIRCLE;
-		int winner = ai.checkWinner(board);
-		assertEquals(-1, winner);
+		EState winner = ai.checkWinner(board, EBoardMark.CIRCLE);
+		assertEquals(EState.PLAYER_WIN, winner);
 	}
 	
 	@Test
-	public void testGetBestMove() {
+	public void testGetBestMoveToBlockAUserWin() {
 		// Test to get the best move
+		// If the AI doesn't play on [0,2] the user will win
+		// Test to check if the AI will block the user
 		EBoardMark [][] board = this.testBoardMarkSet();
-		int[] result = ticTacToeService.getBestMove(board);
-		assertNotNull(result);
+		board[0][0] = EBoardMark.CROSS;
+		int[] result = ticTacToeService.getBestMove(board, EBoardMark.CROSS);
+		assertEquals("[0, 2]",Arrays.toString(result));
 	}
 	
-	@Test(expected = NullPointerException.class)
+	@Test
+	public void testGetBestMoveForAComputerWin() {
+		// Test to get the best move
+		// The AI will have to play on [0, 0] for the computer to win	
+		EBoardMark [][] board = this.testBoardMarkSet();
+		int[] result = ticTacToeService.getBestMove(board, EBoardMark.CROSS);
+		assertEquals("[0, 0]",Arrays.toString(result));
+	}
+	
+	@Test
+	public void testGetBestMoveBoardFull() {
+		// Test to get the best move
+		// The AI will have to play on [0, 0] for the computer to win	
+		EBoardMark [][] board = this.testBoardMarkSet();
+		board[0][0] = EBoardMark.CROSS;
+		board[0][2] = EBoardMark.CIRCLE;
+		board[1][2] = EBoardMark.CROSS;
+		board[2][0] = EBoardMark.CIRCLE;
+		board[2][1] = EBoardMark.CROSS;
+		int[] result = ticTacToeService.getBestMove(board, EBoardMark.CROSS);
+		assertEquals("[-100, -100]",Arrays.toString(result));
+	}
+	
+	@Test
 	public void testGetBestMoveNegative() {
 		// Test to check if the get best move will throw the null pointer exception
 		EBoardMark [][] board = null;
-		ticTacToeService.getBestMove(board);
+		ticTacToeService.getBestMove(board, EBoardMark.CIRCLE);
 	}
 	
 	@Test
@@ -112,7 +141,7 @@ public class TestTicTacToe {
 		board[1][1] = EBoardMark.CIRCLE;
 		board[1][2] = EBoardMark.EMPTY;
 		board[2][0] = EBoardMark.EMPTY;
-		board[2][2] = EBoardMark.EMPTY;
+		board[2][1] = EBoardMark.EMPTY;
 		board[2][2] = EBoardMark.CIRCLE;
 		
 		return board;
