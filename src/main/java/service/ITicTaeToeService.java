@@ -12,6 +12,6 @@ public interface ITicTaeToeService {
 	
 	String NAME = "TicTaeToeService";
 
-	public int[] getBestMove(EBoardMark[][] board);
+	public int[] getBestMove(EBoardMark[][] board, EBoardMark playerMark);
 	public EBoardMark checkTheWinner(EBoardMark[][] board);
 }

@@ -7,7 +7,7 @@ package domain;
  * @ProjectName: tic-tac-toe-core
  */
 public enum EState {
-	PLAYING("Playing"), DRAW("Draw"), CROSS_WIN("Cross Win"), CIRCLE_WIN("Circle Win");
+	COMPUTER_WIN("Computer Win"), PLAYER_WIN("Player Win"), NO_WIN("No Win");
 	
 	private String description;
 	
